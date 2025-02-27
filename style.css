@@ -1,0 +1,92 @@
+.container {
+    max-width: 860px;
+    margin: 0 auto
+    
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.box {
+   border: #334155 1px solid;
+   border-radius: 8px;
+   padding: 28px;
+}
+.carsItem {
+    border: #334155 1px solid;
+    border-radius: 8px;
+    padding: 20px 16px;
+    margin-bottom: 12px;
+    
+}
+
+body {
+    font-family: "Manrope", serif;
+}
+ 
+h1 { 
+    font-size: 24px;
+    line-hight: 24px;
+    margin: 0 0 24px;
+}
+h4,p {
+    margin:0;
+}
+li {
+    list-style: none;
+
+}
+
+ul {
+    margin:28px 0 0;
+    padding:0;
+}
+
+.button {
+    border: none;
+    background-color: white;
+    width: 768px;
+    text-align: left;
+    font-size: 16px;
+    padding:0;
+    display:flex;
+    justify-content: space-between;
+}
+
+.accordion-body {
+    display: none;
+    width: 500px;
+    
+}
+
+.button.active + .accordion-body {
+    display: grid;
+    grid-template-columns: 200px 200px;
+    grid-row-gap:5px;
+    margin-top:15px;
+}
+.circleContainer {
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+
+.accordion {
+    display:grid;
+    
+}
+
+.price {
+    font-size: 21px;
+}
+.dealer {
+    font-size: 13px;
+    opacity:50%;
+}
+
+.clean {
+    display: none;
+}
+
+
