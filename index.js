@@ -317,6 +317,22 @@ function renderColorCircles(colors) {
 }
 
 
+function filterData(query) {
+  return cars.filter(item =>
+      item.brand.toLowerCase().includes(query.toLowerCase())
+  );
+}
+
+document.getElementById("search").addEventListener("input", function(event) {
+  let list = document.getElementById("carsList");
+  const query = event.target.value;
+  const filteredResults = filterData(query);
+  list.innerHTML = "";
+  filteredResults.forEach((car) => {
+    list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
+  })
+});
+
 
 setCarsAmount(cars);
 renderCars(cars);
