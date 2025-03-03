@@ -265,15 +265,25 @@ function rerenderCars(sortedCars) {
   let list = document.getElementById("carsList");
   const sortBtn = document.getElementById("expensive");
   const cleanBtn = document.getElementById("cleanUp");
-  sortBtn.addEventListener("click", () => {
-    if (cleanBtn.style.display = "none") {
+  
+  
+  sortBtn.replaceWith(sortBtn.cloneNode(true));
+  const newSortBtn = document.getElementById("expensive");
+  
+  newSortBtn.addEventListener("click", () => {
+    // Check if button is actually hidden using computed style
+    const computedStyle = window.getComputedStyle(cleanBtn);
+    if (computedStyle.display === "none") {
       cleanBtn.style.display = "inline-block";
     }
+    
     list.innerHTML = "";
     sortedCars.forEach((car) => {
       const carHTML = createCarItemTemplate(car);
       list.insertAdjacentHTML("beforeend", carHTML);
     });
+    
+    initializeAccordions();
   });
 }
 
@@ -282,17 +292,28 @@ function rerenderToCheap(sortedToCheap) {
   let list = document.getElementById("carsList");
   const sortBtn = document.getElementById("cheap");
   const cleanBtn = document.getElementById("cleanUp");
-  sortBtn.addEventListener("click", () => {
-    if (cleanBtn.style.display = "none") {
+  
+  
+  sortBtn.replaceWith(sortBtn.cloneNode(true));
+  const newSortBtn = document.getElementById("cheap");
+  
+  newSortBtn.addEventListener("click", () => {
+    // Check if button is actually hidden using computed style
+    const computedStyle = window.getComputedStyle(cleanBtn);
+    if (computedStyle.display === "none") {
       cleanBtn.style.display = "inline-block";
     }
+    
     list.innerHTML = "";
     sortedToCheap.forEach((car) => {
       const carHTML = createCarItemTemplate(car);
       list.insertAdjacentHTML("beforeend", carHTML);
     });
+    
+    initializeAccordions();
   });
 }
+
 
 function cleanUp () {
   let list = document.getElementById("carsList");
@@ -303,6 +324,7 @@ function cleanUp () {
     cars.forEach((car) => {
       list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
     });
+    initializeAccordions();
   })
 
 }
@@ -317,21 +339,36 @@ function renderColorCircles(colors) {
 }
 
 
-function filterData(query) {
+// More generic filter function that takes property name as parameter
+function filterCarsByProperty(query, property) {
   return cars.filter(item =>
-      item.brand.toLowerCase().includes(query.toLowerCase())
+    item[property].toLowerCase().includes(query.toLowerCase())
   );
 }
 
-document.getElementById("search").addEventListener("input", function(event) {
+// Helper function to render the filtered results
+function displayFilteredCars(filteredResults) {
   let list = document.getElementById("carsList");
-  const query = event.target.value;
-  const filteredResults = filterData(query);
   list.innerHTML = "";
   filteredResults.forEach((car) => {
     list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
-  })
+  });
+}
+
+// Setup the event listeners for different inputs
+document.getElementById("search").addEventListener("input", function(event) {
+  const query = event.target.value;
+  const filteredResults = filterCarsByProperty(query, "brand");
+  displayFilteredCars(filteredResults);
 });
+
+document.getElementById("model").addEventListener("input", function(event) {
+  const query = event.target.value;
+  const filteredResults = filterCarsByProperty(query, "model");
+  displayFilteredCars(filteredResults);
+});
+
+
 
 
 setCarsAmount(cars);
@@ -342,6 +379,14 @@ rerenderCars(sortCars(cars));
 sortToCheap(cars);
 rerenderToCheap(sortToCheap(cars));
 cleanUp();
+
+
+
+
+
+
+
+
 
 
 
