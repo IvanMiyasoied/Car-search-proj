@@ -346,27 +346,10 @@ function filterCarsByProperty(query, property) {
   );
 }
 
-// Helper function to render the filtered results
-function displayFilteredCars(filteredResults) {
-  let list = document.getElementById("carsList");
-  list.innerHTML = "";
-  filteredResults.forEach((car) => {
-    list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
-  });
-}
 
-// Setup the event listeners for different inputs
-document.getElementById("search").addEventListener("input", function(event) {
-  const query = event.target.value;
-  const filteredResults = filterCarsByProperty(query, "brand");
-  displayFilteredCars(filteredResults);
-});
 
-document.getElementById("model").addEventListener("input", function(event) {
-  const query = event.target.value;
-  const filteredResults = filterCarsByProperty(query, "model");
-  displayFilteredCars(filteredResults);
-});
+
+
 
 
 
@@ -394,4 +377,27 @@ cleanUp();
 
 
 
+
+// // Helper function to render the filtered results
+// function displayFilteredCars(filteredResults) {
+//   let list = document.getElementById("carsList");
+//   list.innerHTML = "";
+//   filteredResults.forEach((car) => {
+//     list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
+//     initializeAccordions();
+//   });
+// }
+
+// // Setup the event listeners for different inputs
+// document.getElementById("search").addEventListener("input", function(event) {
+//   const query = event.target.value;
+//   const filteredResults = filterCarsByProperty(query, "brand");
+//   displayFilteredCars(filteredResults);
+// });
+
+// document.getElementById("model").addEventListener("input", function(event) {
+//   const query = event.target.value;
+//   const filteredResults = filterCarsByProperty(query, "model");
+//   displayFilteredCars(filteredResults);
+// });
 
