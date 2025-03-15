@@ -16,8 +16,8 @@
 .carsItem {
     border: #334155 1px solid;
     border-radius: 8px;
-    padding: 20px 16px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+
     
 }
 
@@ -45,18 +45,21 @@ ul {
 
 .button {
     border: none;
+    border-radius: inherit;
     background-color: white;
-    width: 768px;
+    width: 100%;
     text-align: left;
     font-size: 16px;
-    padding:0;
     display:flex;
     justify-content: space-between;
+    padding: 20px 16px;
+    
 }
 
 .accordion-body {
     display: none;
     width: 500px;
+    padding: 0  16px 20px ;
     
 }
 
@@ -64,7 +67,7 @@ ul {
     display: grid;
     grid-template-columns: 200px 200px;
     grid-row-gap:5px;
-    margin-top:15px;
+    /* margin-top:15px; */
 }
 .circleContainer {
     display: flex;
@@ -89,6 +92,12 @@ ul {
     display: none;
 }
 
+#price {
+    width: 77px;
+}
 
+#year {
+    width: 77px;
+}
 
 

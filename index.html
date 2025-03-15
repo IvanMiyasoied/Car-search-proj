@@ -1,47 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
       <header class="header">
-        <a href="/"><img src="/img/Logo.svg" alt="picture"></a>
+        <a href="/"><img src="/img/Logo.svg" alt="picture" /></a>
       </header>
       <main>
         <section class="box">
-            <h1>Пошук автомобілів</h1>
-            <p>Зараз в наявності:<span id="carAmount">0</span></p>
-            <div class="Form">
-                <form action="submit">
-                  <label for="title">Бренд</label>
-                  <input type="text" id="brand">
-                  <label for="title">Модель</label>
-                  <input type="text" id="model">
-
-                </form>
-
-
-              
-            </div>
-            <div class="sortBtns"><button id="expensive" class="expensive">Спочатку дорогі</button><button id="cheap" class="cheap">Спочатку дешеві</button><button id="cleanUp" class="clean">Очистити</button></div>
-            <ul id="carsList">
-              
-            </ul>
-
-
+          <h1>Пошук автомобілів</h1>
+          <p>Зараз в наявності:<span id="carAmount">0</span></p>
+          <div class="Form">
+            <form id="filterForm">
+              <span>
+                <label for="brand">Бренд</label>
+                <input name="brand" type="text" id="brand" />
+              </span>
+              <span>
+                <label for="model">Модель</label>
+                <input name="model" type="text" id="model" />
+              </span>
+              <span class="price">
+                <label for="fromPrice">Ціна</label>
+                <input name="fromPrice" type="text" id="fromPrice" /> -
+                <input name="toPrice" type="text" id="toPrice" />
+              </span>
+              <span class="year">
+                <label for="fromYear">Рік</label>
+                <input name="fromYear" type="text" id="fromYear" /> -
+                <input name="toYear" type="text" id="toYear" />
+              </span>
+              <button type="submit">Застосувати</button>
+              <button type="reset">Скинути</button>
+            </form>
+          </div>
+          <div class="sortBtns">
+            <button id="expensive" class="expensive">Спочатку дорогі</button
+            ><button id="cheap" class="cheap">Спочатку дешеві</button
+            ><button id="cleanUp" class="clean">Очистити</button>
+          </div>
+          <ul id="carsList"></ul>
         </section>
       </main>
-
-
-
     </div>
     <script src="index.js"></script>
-</body>
+  </body>
 </html>

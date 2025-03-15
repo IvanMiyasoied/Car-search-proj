@@ -201,17 +201,19 @@ function setCarsAmount(cars) {
 
 function renderCars(cars) {
   let list = document.getElementById("carsList");
+  list.innerHTML = "";
   // get access to our "ul" tag - actual list of cars
 
   cars.forEach((car) => {
     list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
   });
+  initializeAccordions();
   // creating a "car" element from cars obj and implement it to html using insertAdjacentHTML
 }
 
 function createCarItemTemplate(car) {
   // whole function creates template of "car" element on page
-  const { brand, dealer, model, year,features } = car;
+  const { brand, dealer, model, year, features } = car;
 
   let averageRating =
     dealer.ratings.reduce((acc, cur) => acc + cur, 0) / dealer.ratings.length; // compute rating
@@ -220,14 +222,22 @@ function createCarItemTemplate(car) {
                             <button class="button ">
                             <div class="accordion">
                               <h4>${brand} ${model}, ${year} рік</h4>
-                              <p class="dealer">Дилер - ${dealer.name}. Середній рейтинг - ${averageRating.toFixed(2)}</p>
+                              <p class="dealer">Дилер - ${
+                                dealer.name
+                              }. Середній рейтинг - ${averageRating.toFixed(2)}</p>
                               </div>
                               <p class="price">${car.price} USD</p>
                             </button>
                             <div class="accordion-body">
-                            <span>Двигун:</span> <span class="engine">${features.engine}</span>
-                            <span>Коробка передач:</span> <span class="transmission">${features.transmission}</span>
-                            <span>Доступні кольори:</span> <span class="circleContainer">${renderColorCircles(features.colorOptions)}</span>
+                            <span>Двигун:</span> <span class="engine">${
+                              features.engine
+                            }</span>
+                            <span>Коробка передач:</span> <span class="transmission">${
+                              features.transmission
+                            }</span>
+                            <span>Доступні кольори:</span> <span class="circleContainer">${renderColorCircles(
+                              features.colorOptions
+                            )}</span>
                             </div>
                             </li>`;
 
@@ -236,99 +246,66 @@ function createCarItemTemplate(car) {
 
 function initializeAccordions() {
   const buttons = document.querySelectorAll(".button");
-  buttons.forEach((button) => {
+  buttons.forEach(button => {
     button.addEventListener("click", function () {
       button.classList.toggle("active");
-        
     });
   });
 }
 
-
 function sortCars(cars) {
   let sortedCars;
-      sortedCars = [...cars].sort((a, b) => b.price - a.price);
+  sortedCars = [...cars].sort((a, b) => b.price - a.price);
 
-  return sortedCars;
+  const sortBtn = document.getElementById("expensive");
+  const cleanBtn = document.getElementById("cleanUp");
+  sortBtn.replaceWith(sortBtn.cloneNode(true));
+  const newSortBtn = document.getElementById("expensive");
+  newSortBtn.addEventListener("click", () => {
+    // Check if button is actually hidden using computed style
+    const computedStyle = window.getComputedStyle(cleanBtn);
+    if (computedStyle.display === "none") {
+      cleanBtn.style.display = "inline-block";
+    }
+    renderCars(sortedCars);
+  });
+
+  
 }
 
 function sortToCheap(cars) {
   let sortedToCheap;
-      sortedToCheap = [...cars].sort((a, b) => a.price - b.price);
+  sortedToCheap = [...cars].sort((a, b) => a.price - b.price);
+
+
+  const sortBtn = document.getElementById("cheap");
+  const cleanBtn = document.getElementById("cleanUp");
+
+  sortBtn.replaceWith(sortBtn.cloneNode(true));
+  const newSortBtn = document.getElementById("cheap");
+
+  newSortBtn.addEventListener("click", () => {
+    // Check if button is actually hidden using computed style
+    const computedStyle = window.getComputedStyle(cleanBtn);
+    if (computedStyle.display === "none") {
+      cleanBtn.style.display = "inline-block";
+    }
+    renderCars(sortedToCheap);
+    
+  });
 
   return sortedToCheap;
 }
 
 
 
-function rerenderCars(sortedCars) {
-  let list = document.getElementById("carsList");
-  const sortBtn = document.getElementById("expensive");
+function cleanUp() {
   const cleanBtn = document.getElementById("cleanUp");
-  
-  
-  sortBtn.replaceWith(sortBtn.cloneNode(true));
-  const newSortBtn = document.getElementById("expensive");
-  
-  newSortBtn.addEventListener("click", () => {
-    // Check if button is actually hidden using computed style
-    const computedStyle = window.getComputedStyle(cleanBtn);
-    if (computedStyle.display === "none") {
-      cleanBtn.style.display = "inline-block";
-    }
-    
-    list.innerHTML = "";
-    sortedCars.forEach((car) => {
-      const carHTML = createCarItemTemplate(car);
-      list.insertAdjacentHTML("beforeend", carHTML);
-    });
-    
-    initializeAccordions();
-  });
-}
-
-
-function rerenderToCheap(sortedToCheap) {
-  let list = document.getElementById("carsList");
-  const sortBtn = document.getElementById("cheap");
-  const cleanBtn = document.getElementById("cleanUp");
-  
-  
-  sortBtn.replaceWith(sortBtn.cloneNode(true));
-  const newSortBtn = document.getElementById("cheap");
-  
-  newSortBtn.addEventListener("click", () => {
-    // Check if button is actually hidden using computed style
-    const computedStyle = window.getComputedStyle(cleanBtn);
-    if (computedStyle.display === "none") {
-      cleanBtn.style.display = "inline-block";
-    }
-    
-    list.innerHTML = "";
-    sortedToCheap.forEach((car) => {
-      const carHTML = createCarItemTemplate(car);
-      list.insertAdjacentHTML("beforeend", carHTML);
-    });
-    
-    initializeAccordions();
-  });
-}
-
-
-function cleanUp () {
-  let list = document.getElementById("carsList");
-  const cleanBtn = document.getElementById("cleanUp");
-  cleanBtn.addEventListener('click', () => {
+  cleanBtn.addEventListener("click", () => {
     cleanBtn.style.display = "none";
-    list.innerHTML = "";
-    cars.forEach((car) => {
-      list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
-    });
-    initializeAccordions();
-  })
-
+    renderCars(cars);
+  });
 }
-
 
 function renderColorCircles(colors) {
   const template = colors.map(
@@ -338,66 +315,40 @@ function renderColorCircles(colors) {
   return template.join(" ");
 }
 
-
 // More generic filter function that takes property name as parameter
 function filterCarsByProperty(query, property) {
-  return cars.filter(item =>
+  return cars.filter((item) =>
     item[property].toLowerCase().includes(query.toLowerCase())
   );
 }
 
+const form = document.getElementById("filterForm");
 
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
+  const formData = new FormData(e.target);
 
+  const formValues = Object.fromEntries(formData);
 
+  const filteredCarsByBrand = cars.filter((car) => {
+    const matchByBrand =
+      car.brand.toLowerCase().includes(formValues.brand.toLowerCase()) ||
+      formValues.brand.trim() === "";
+    const matchByModel =
+      car.model.toLowerCase().includes(formValues.model.toLowerCase()) ||
+      formValues.model.trim() === "";
 
+    return matchByBrand && matchByModel;
+  });
 
-
+  renderCars(filteredCarsByBrand);
+  initializeAccordions();
+});
 
 setCarsAmount(cars);
 renderCars(cars);
-initializeAccordions();
-sortCars(cars)
-rerenderCars(sortCars(cars));
+sortCars(cars);
 sortToCheap(cars);
-rerenderToCheap(sortToCheap(cars));
 cleanUp();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // Helper function to render the filtered results
-// function displayFilteredCars(filteredResults) {
-//   let list = document.getElementById("carsList");
-//   list.innerHTML = "";
-//   filteredResults.forEach((car) => {
-//     list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
-//     initializeAccordions();
-//   });
-// }
-
-// // Setup the event listeners for different inputs
-// document.getElementById("search").addEventListener("input", function(event) {
-//   const query = event.target.value;
-//   const filteredResults = filterCarsByProperty(query, "brand");
-//   displayFilteredCars(filteredResults);
-// });
-
-// document.getElementById("model").addEventListener("input", function(event) {
-//   const query = event.target.value;
-//   const filteredResults = filterCarsByProperty(query, "model");
-//   displayFilteredCars(filteredResults);
-// });
 
