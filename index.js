@@ -151,7 +151,7 @@ const cars = [
     features: {
       engine: "2.5L Inline-4",
       transmission: "Automatic",
-      colorOptions: ["gray", "black", "white"],
+      colorOptions: ["grey", "black", "white"],
     },
     dealer: {
       name: "QuickRide",
@@ -208,6 +208,8 @@ function renderCars(cars) {
     list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
   });
   initializeAccordions();
+  
+  
   // creating a "car" element from cars obj and implement it to html using insertAdjacentHTML
 }
 
@@ -219,7 +221,7 @@ function createCarItemTemplate(car) {
     dealer.ratings.reduce((acc, cur) => acc + cur, 0) / dealer.ratings.length; // compute rating
 
   let itemTemplate = `<li class = "carsItem">
-                            <button class="button ">
+                            <button class="button">
                             <div class="accordion">
                               <h4>${brand} ${model}, ${year} рік</h4>
                               <p class="dealer">Дилер - ${
@@ -253,50 +255,53 @@ function initializeAccordions() {
   });
 }
 
-function sortCars(cars) {
-  let sortedCars;
-  sortedCars = [...cars].sort((a, b) => b.price - a.price);
 
-  const sortBtn = document.getElementById("expensive");
-  const cleanBtn = document.getElementById("cleanUp");
-  sortBtn.replaceWith(sortBtn.cloneNode(true));
-  const newSortBtn = document.getElementById("expensive");
-  newSortBtn.addEventListener("click", () => {
-    // Check if button is actually hidden using computed style
-    const computedStyle = window.getComputedStyle(cleanBtn);
-    if (computedStyle.display === "none") {
-      cleanBtn.style.display = "inline-block";
-    }
-    renderCars(sortedCars);
-  });
+
+const sortAscBtn = document.getElementById("expensive");
+sortAscBtn.addEventListener('click', function() {
+  sortCars(cars,'asc')
+});
+const sortDescBtn = document.getElementById("cheap");
+sortDescBtn.addEventListener('click', function() {
+  sortCars(cars,'desc')
+});
+const cleanBtn = document.getElementById("cleanUp");
+
+
+
+function sortCars(cars,sortType) {
+  let sortedCars; 
+  if (sortType === 'asc'){
+    sortedCars = [...cars].sort((a, b) => b.price - a.price);
+
+  } else if (sortType === 'desc') {
+    sortedCars = [...cars].sort((a, b) => a.price - b.price);
+  } else {
+    sortedCars = [...cars]
+  }
 
   
-}
-
-function sortToCheap(cars) {
-  let sortedToCheap;
-  sortedToCheap = [...cars].sort((a, b) => a.price - b.price);
+    renderCars(sortedCars);
+  };
 
 
-  const sortBtn = document.getElementById("cheap");
-  const cleanBtn = document.getElementById("cleanUp");
 
-  sortBtn.replaceWith(sortBtn.cloneNode(true));
-  const newSortBtn = document.getElementById("cheap");
-
-  newSortBtn.addEventListener("click", () => {
-    // Check if button is actually hidden using computed style
-    const computedStyle = window.getComputedStyle(cleanBtn);
-    if (computedStyle.display === "none") {
-      cleanBtn.style.display = "inline-block";
-    }
-    renderCars(sortedToCheap);
+  function filterYear() {
+     const yearFromInput = document.getElementById('fromYear')
+     const yearToInput = document.getElementById('toYear')
     
-  });
-
-  return sortedToCheap;
-}
-
+     const yearValueFrom = yearFromInput.value
+     const yearValueTo = yearToInput.value
+     return cars.filter((car) => {
+        if ( car.year >= yearValueFrom && car.year <= yearValueTo) {
+          return true
+        } else {
+          return false
+        }
+     })
+          
+  }
+  
 
 
 function cleanUp() {
@@ -338,17 +343,36 @@ form.addEventListener("submit", function (e) {
     const matchByModel =
       car.model.toLowerCase().includes(formValues.model.toLowerCase()) ||
       formValues.model.trim() === "";
-
-    return matchByBrand && matchByModel;
+      const filterByYear = (
+        (formValues.fromYear === "" || car.year >= formValues.fromYear) &&
+        (formValues.toYear === "" || car.year <= formValues.toYear)
+      );
+  
+      const filterByPrice = (
+        (formValues.fromPrice === "" || car.price >= formValues.fromPrice) &&
+        (formValues.toPrice === "" || car.price <= formValues.toPrice)
+      );
+  
+      return matchByBrand && matchByModel && filterByYear && filterByPrice;
   });
 
   renderCars(filteredCarsByBrand);
   initializeAccordions();
 });
 
+
+function renderColorCheckbox() {
+ const colorsArr = cars.flatMap((car) => {
+    return car.features.colorOptions
+ }) 
+  console.log(Array.from(new Set(colorsArr)));
+  
+}
+
+
+
 setCarsAmount(cars);
 renderCars(cars);
-sortCars(cars);
-sortToCheap(cars);
 cleanUp();
 
+renderColorCheckbox();

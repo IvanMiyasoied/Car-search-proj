@@ -99,5 +99,13 @@ ul {
 #year {
     width: 77px;
 }
+.fromPrice,.toPrice {
+    width: 50px;
+}
 
-
+.fromYear,.toYear {
+    width:50px;
+}
+.priceLabel {
+    font-size:15px;
+}

@@ -31,16 +31,19 @@
                 <label for="model">Модель</label>
                 <input name="model" type="text" id="model" />
               </span>
-              <span class="price">
-                <label for="fromPrice">Ціна</label>
-                <input name="fromPrice" type="text" id="fromPrice" /> -
-                <input name="toPrice" type="text" id="toPrice" />
-              </span>
-              <span class="year">
+              <div class="price">
+                <label for="fromPrice" class="priceLabel">Ціна</label>
+                <input name="fromPrice" type="text" id="fromPrice" class="fromPrice" /> -
+                <input name="toPrice" type="text" id="toPrice" class="toPrice" />
+              </div>
+              <div class="year">
                 <label for="fromYear">Рік</label>
-                <input name="fromYear" type="text" id="fromYear" /> -
-                <input name="toYear" type="text" id="toYear" />
-              </span>
+                <input name="fromYear" type="text" id="fromYear" class="fromYear"/> -
+                <input name="toYear" type="text" id="toYear" class="toYear" />
+              </div>
+              <ul id="checkBoxList">
+
+              </ul>
               <button type="submit">Застосувати</button>
               <button type="reset">Скинути</button>
             </form>
