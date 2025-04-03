@@ -208,8 +208,7 @@ function renderCars(cars) {
     list.insertAdjacentHTML("beforeend", createCarItemTemplate(car));
   });
   initializeAccordions();
-  
-  
+
   // creating a "car" element from cars obj and implement it to html using insertAdjacentHTML
 }
 
@@ -226,7 +225,9 @@ function createCarItemTemplate(car) {
                               <h4>${brand} ${model}, ${year} рік</h4>
                               <p class="dealer">Дилер - ${
                                 dealer.name
-                              }. Середній рейтинг - ${averageRating.toFixed(2)}</p>
+                              }. Середній рейтинг - ${averageRating.toFixed(
+    2
+  )}</p>
                               </div>
                               <p class="price">${car.price} USD</p>
                             </button>
@@ -248,61 +249,35 @@ function createCarItemTemplate(car) {
 
 function initializeAccordions() {
   const buttons = document.querySelectorAll(".button");
-  buttons.forEach(button => {
+  buttons.forEach((button) => {
     button.addEventListener("click", function () {
       button.classList.toggle("active");
     });
   });
 }
 
-
-
 const sortAscBtn = document.getElementById("expensive");
-sortAscBtn.addEventListener('click', function() {
-  sortCars(cars,'asc')
+sortAscBtn.addEventListener("click", function () {
+  sortCars(cars, "asc");
 });
 const sortDescBtn = document.getElementById("cheap");
-sortDescBtn.addEventListener('click', function() {
-  sortCars(cars,'desc')
+sortDescBtn.addEventListener("click", function () {
+  sortCars(cars, "desc");
 });
 const cleanBtn = document.getElementById("cleanUp");
 
-
-
-function sortCars(cars,sortType) {
-  let sortedCars; 
-  if (sortType === 'asc'){
+function sortCars(cars, sortType) {
+  let sortedCars;
+  if (sortType === "asc") {
     sortedCars = [...cars].sort((a, b) => b.price - a.price);
-
-  } else if (sortType === 'desc') {
+  } else if (sortType === "desc") {
     sortedCars = [...cars].sort((a, b) => a.price - b.price);
   } else {
-    sortedCars = [...cars]
+    sortedCars = [...cars];
   }
 
-  
-    renderCars(sortedCars);
-  };
-
-
-
-  function filterYear() {
-     const yearFromInput = document.getElementById('fromYear')
-     const yearToInput = document.getElementById('toYear')
-    
-     const yearValueFrom = yearFromInput.value
-     const yearValueTo = yearToInput.value
-     return cars.filter((car) => {
-        if ( car.year >= yearValueFrom && car.year <= yearValueTo) {
-          return true
-        } else {
-          return false
-        }
-     })
-          
-  }
-  
-
+  renderCars(sortedCars);
+}
 
 function cleanUp() {
   const cleanBtn = document.getElementById("cleanUp");
@@ -329,12 +304,15 @@ function filterCarsByProperty(query, property) {
 
 const form = document.getElementById("filterForm");
 
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", function(e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
 
   const formValues = Object.fromEntries(formData);
+  formValues.colors = formData.getAll('colors')
+
+  localStorage.setItem('user', JSON.stringify(formValues));
 
   const filteredCarsByBrand = cars.filter((car) => {
     const matchByBrand =
@@ -343,36 +321,49 @@ form.addEventListener("submit", function (e) {
     const matchByModel =
       car.model.toLowerCase().includes(formValues.model.toLowerCase()) ||
       formValues.model.trim() === "";
-      const filterByYear = (
-        (formValues.fromYear === "" || car.year >= formValues.fromYear) &&
-        (formValues.toYear === "" || car.year <= formValues.toYear)
-      );
-  
-      const filterByPrice = (
-        (formValues.fromPrice === "" || car.price >= formValues.fromPrice) &&
-        (formValues.toPrice === "" || car.price <= formValues.toPrice)
-      );
-  
-      return matchByBrand && matchByModel && filterByYear && filterByPrice;
+    const filterByYear =
+      (formValues.fromYear === "" || car.year >= formValues.fromYear) &&
+      (formValues.toYear === "" || car.year <= formValues.toYear);
+
+    const filterByPrice =
+      (formValues.fromPrice === "" || car.price >= formValues.fromPrice) &&
+      (formValues.toPrice === "" || car.price <= formValues.toPrice);
+    
+    const filterByColor = formValues.colors.some((color) => {
+         return car.features.colorOptions.includes(color)
+    })
+     
+    
+    
+    
+    return matchByBrand && matchByModel && filterByYear && filterByPrice && filterByColor;
   });
 
   renderCars(filteredCarsByBrand);
-  initializeAccordions();
 });
 
-
 function renderColorCheckbox() {
- const colorsArr = cars.flatMap((car) => {
-    return car.features.colorOptions
- }) 
-  console.log(Array.from(new Set(colorsArr)));
+  const colorsArr = Array.from(
+    new Set(
+      cars.flatMap((car) => {
+        return car.features.colorOptions;
+      })
+    )
+  );
+  const colorsCheckbox = document.getElementById("checkBoxList");
+  const template = colorsArr.map((color) => {
+    const itemTemplate = `<li style ="display:inline-block;">
+    <label>
+    <input name="colors" type="checkbox" class="checkbox" value="${color}" style="background:${color}">
+    </label>
+    </li>`;
+    return itemTemplate;
+  });
+  colorsCheckbox.innerHTML = template.join("");
   
 }
-
-
 
 setCarsAmount(cars);
 renderCars(cars);
 cleanUp();
-
 renderColorCheckbox();
