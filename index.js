@@ -312,7 +312,10 @@ form.addEventListener("submit", function(e) {
   const formValues = Object.fromEntries(formData);
   formValues.colors = formData.getAll('colors')
 
-  localStorage.setItem('user', JSON.stringify(formValues));
+  localStorage.setItem('filterConfig', JSON.stringify(formValues));
+
+
+  
 
   const filteredCarsByBrand = cars.filter((car) => {
     const matchByBrand =
@@ -331,7 +334,7 @@ form.addEventListener("submit", function(e) {
     
     const filterByColor = formValues.colors.some((color) => {
          return car.features.colorOptions.includes(color)
-    })
+    }) ?? formValues.colors.length === 0
      
     
     
@@ -340,6 +343,8 @@ form.addEventListener("submit", function(e) {
   });
 
   renderCars(filteredCarsByBrand);
+  console.log(filteredCarsByBrand);
+  
 });
 
 function renderColorCheckbox() {
@@ -363,7 +368,21 @@ function renderColorCheckbox() {
   
 }
 
-setCarsAmount(cars);
-renderCars(cars);
-cleanUp();
-renderColorCheckbox();
+
+document.addEventListener('DOMContentLoaded', () => {
+  setCarsAmount(cars);
+  renderCars(cars);
+  cleanUp();
+  renderColorCheckbox();
+
+const storedData = JSON.parse(localStorage.getItem('filterConfig')) ?? {}
+
+
+
+
+form.querySelectorAll('input[type=text]').forEach((input) => {
+  input.value = storedData[input.name] ?? ''
+})
+    
+
+})
