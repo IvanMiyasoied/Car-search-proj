@@ -334,7 +334,7 @@ form.addEventListener("submit", function(e) {
     
     const filterByColor = formValues.colors.some((color) => {
          return car.features.colorOptions.includes(color)
-    }) ?? formValues.colors.length === 0
+    }) || formValues.colors.length === 0
      
     
     
@@ -380,9 +380,14 @@ const storedData = JSON.parse(localStorage.getItem('filterConfig')) ?? {}
 
 
 
-form.querySelectorAll('input[type=text]').forEach((input) => {
+form.querySelectorAll('input[type=text],input[type=number]').forEach((input) => {
   input.value = storedData[input.name] ?? ''
 })
-    
+form.querySelectorAll('input[type=checkbox]').forEach((checkbox) => {
+  checkbox.checked = storedData[checkbox.name].includes(checkbox.value)
 
 })
+form.requestSubmit()
+});
+
+
